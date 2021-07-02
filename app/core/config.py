@@ -77,6 +77,7 @@ class Settings(BaseSettings):
     FIRST_SUPERUSER_PASSWORD: str = os.getenv('FIRST_SUPERUSER_PASSWORD')
     USERS_OPEN_REGISTRATION: bool = False
 
+
     class Config:
         case_sensitive = True
 
