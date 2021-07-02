@@ -1,11 +1,14 @@
 ## Requirements
-- python 3.8
-- postgres 13
-- redis 
+- Python 3.8
+- PostgresSQL 13
+- Redis 
+
 
 ## Install
+Install Poetry - Tool for dependency management and packaging in Python
 
-```poetry install```
-
-```poetry shell```
+```
+poetry install
+poetry shell
+```
 
