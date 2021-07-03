@@ -73,9 +73,6 @@ class Settings(BaseSettings):
             and values.get("EMAILS_FROM_EMAIL")
         )
 
-    EMAIL_TEST_USER: EmailStr = os.getenv('EMAIL_TEST_USER')  # type: ignore
-    FIRST_SUPERUSER: EmailStr = os.getenv('FIRST_SUPERUSER')
-    FIRST_SUPERUSER_PASSWORD: str = os.getenv('FIRST_SUPERUSER_PASSWORD')
     USERS_OPEN_REGISTRATION: bool = False
 
     class Config:
