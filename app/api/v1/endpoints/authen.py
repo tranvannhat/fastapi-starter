@@ -1,7 +1,7 @@
 from datetime import timedelta
 from typing import Any
 
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
@@ -10,6 +10,7 @@ from app.api import deps
 from app.core import security
 from app.core.config import settings
 from app.core.security import get_password_hash
+from app.schemas.base import DataResponse
 from app.utils import (
     generate_password_reset_token,
     send_reset_password_email,
@@ -42,12 +43,12 @@ def login_access_token(
     }
 
 
-@router.post("/login/test-token", response_model=schemas.User)
-def test_token(current_user: models.DbUser = Depends(deps.get_current_user)) -> Any:
+@router.post("/login/test-token", response_model=DataResponse[schemas.User])
+def test_token(request: Request, current_user: models.DbUser = Depends(deps.get_current_user)) -> Any:
     """
     Test access token
     """
-    return current_user
+    return DataResponse().success_response(request, current_user)
 
 
 @router.post("/password-recovery/{email}", response_model=schemas.Msg)

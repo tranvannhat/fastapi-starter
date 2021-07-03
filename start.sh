@@ -1,4 +1,4 @@
 #! /usr/bin/env bash
 
-# Let the DB start
+# Let the start app
 uvicorn app.main:app --reload
