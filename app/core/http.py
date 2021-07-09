@@ -1,37 +1,6 @@
 import aiohttp
 import requests
 import json
-import socket
-from fastapi import HTTPException
-from starlette import status
-from starlette.requests import Request
-from starlette.responses import JSONResponse
-
-
-def http_response_success(request: Request, data=None, status_code=status.HTTP_200_OK):
-    hostname = socket.gethostname()
-    local_ip = socket.gethostbyname(hostname)
-    if data is None:
-        data = {}
-    data_return = {
-        "ip": f'{request.client.host} | {local_ip}',
-        "message": "Success",
-        "data": data,
-    }
-    return JSONResponse(data_return, status_code=status_code)
-
-
-async def http_error_handler(_: Request, exc: HTTPException) -> JSONResponse:
-    data_return = {
-        "track_id": None,
-        "ip": None,
-        "error": {
-            "code": exc.status_code,
-            "message": exc.detail
-        }
-
-    }
-    return JSONResponse(data_return, status_code=exc.status_code)
 
 
 class JSONHTTPClient(object):

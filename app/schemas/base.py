@@ -12,15 +12,8 @@ T = TypeVar("T")
 class ResponseSchemaBase(BaseModel):
     __abstract__ = True
 
-    ip: str = ""
-    track_id: str = ""
-
-    def custom_response(self, request: Request, message: str):
-        return {
-            "track_id": f'{request.client.host.replace(".", "")}{generate_track_id()}N',
-            "ip": f'{request.client.host}',
-            "message": message
-        }
+    ip: str = None
+    track_id: str = None
 
     def error_response(self, request: Request, error: T):
         return {
@@ -42,9 +35,3 @@ class DataResponse(ResponseSchemaBase, GenericModel, Generic[T]):
             "ip": f'{request.client.host}',
             "data": data
         }
-
-
-class MetadataSchema(BaseModel):
-    current_page: int
-    page_size: int
-    total_items: int

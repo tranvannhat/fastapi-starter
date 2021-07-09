@@ -10,23 +10,6 @@ from app.schemas.base import ResponseSchemaBase
 from app.resources import strings
 
 
-class ExceptionType(enum.Enum):
-    MS_UNAVAILABLE = status.HTTP_500_INTERNAL_SERVER_ERROR, '990', strings.MS_UNAVAILABLE
-    MS_INVALID_API_PATH = status.HTTP_500_INTERNAL_SERVER_ERROR, '991', strings.MS_INVALID_API_PATH
-    DATA_RESPONSE_MALFORMED = status.HTTP_500_INTERNAL_SERVER_ERROR, '992', strings.DATA_RESPONSE_MALFORMED
-
-    def __new__(cls, *args, **kwds):
-        value = len(cls.__members__) + 1
-        obj = object.__new__(cls)
-        obj._value_ = value
-        return obj
-
-    def __init__(self, http_code, code, message):
-        self.http_code = http_code
-        self.code = code
-        self.message = message
-
-
 class CustomException(Exception):
     http_code: int
     message: str
