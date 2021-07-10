@@ -4,6 +4,5 @@ __pycache__/
 *$py.class
 
 # Editor - IDE
-.idea/
-.vscode/
-
+.idea
+.vscode
