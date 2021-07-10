@@ -12,3 +12,7 @@ poetry install
 poetry shell
 ```
 
+```
+alembic revision --autogenerate -m "update db" 
+```
+

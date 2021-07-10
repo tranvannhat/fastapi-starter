@@ -15,8 +15,8 @@ class CRUDUser(CRUDBase[DbUser, UserCreate, UserUpdate]):
     def create(self, db: Session, *, obj_in: UserCreate) -> DbUser:
         db_obj = DbUser(
             email=obj_in.email,
+            username=obj_in.username,
             hashed_password=get_password_hash(obj_in.password),
-            full_name=obj_in.full_name,
             is_superuser=obj_in.is_superuser,
         )
         db.add(db_obj)

@@ -48,9 +48,9 @@ class BaseModel(Base):
     __abstract__ = True
     id = Column(UUID(as_uuid=True), primary_key=True, default=default_uuid)
     created_at = Column(BigInteger(), index=True)
-    created_by = Column(String(), nullable=True)
+    created_by = Column(String(), nullable=True, default="System")
     updated_at = Column(BigInteger())
-    updated_by = Column(String(), nullable=True)
+    updated_by = Column(String(), nullable=True, default="System")
     deleted = Column(Boolean, default=False, index=True)
     deleted_by = Column(String(), nullable=True)
     deleted_at = Column(BigInteger())

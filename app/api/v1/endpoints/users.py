@@ -31,26 +31,6 @@ def read_users(
     return DataResponse().success_response(request, users)
 
 
-@router.post("", response_model=DataResponse[schemas.User])
-def create_user(
-        *,
-        request: Request,
-        db: Session = Depends(deps.get_db),
-        user_in: schemas.UserCreate,
-        current_user: models.DbUser = Depends(deps.get_current_active_superuser),  # noqa
-) -> Any:
-    """
-    Create new user.
-    """
-    user = crud.user.get_by_email(db, email=user_in.email)
-    if user:
-        raise CustomException(http_code=status.HTTP_400_BAD_REQUEST, message="The user with this username already exists in the system.")
-    user = crud.user.create(db, obj_in=user_in)
-    if settings.EMAILS_ENABLED and user_in.email:
-        send_new_account_email(email_to=user_in.email, username=user_in.email, password=user_in.password)
-    return DataResponse().success_response(request, user)
-
-
 @router.put("/me", response_model=DataResponse[schemas.User])
 def update_user_me(
         *,
@@ -154,3 +134,33 @@ def update_user(
         )
     user = crud.user.update(db, db_obj=user, obj_in=user_in)
     return DataResponse().success_response(request, user)
+
+
+@router.put("/profile/{user_id}", response_model=DataResponse[schemas.UserProfile])
+def update_user_profile(
+        *,
+        request: Request,
+        db: Session = Depends(deps.get_db),
+        user_id: str,
+        user_profile_in: schemas.UserProfileUpdate,
+        current_user: models.DbUser = Depends(deps.get_current_active_user),  # noqa
+) -> Any:
+    """
+    Update a user profile
+    """
+    user = crud.user.get(db, id=user_id)
+    if not user:
+        raise CustomException(
+            http_code=404,
+            message="The user with this username does not exist in the system",
+        )
+    print(user_id)
+    user_profile = crud.user_profile.get_by_user_id(db, user_id=user_id)
+    if user_profile:
+        response = crud.user_profile.update(db, db_obj=user_profile, obj_in=user_profile_in)
+    else:
+        user_profile_in.user_id = user_id
+        response = crud.user_profile.create(db, obj_in=user_profile_in)
+    print(user_profile)
+    return DataResponse().success_response(request, response)
+
